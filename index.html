@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+
+        .parent{
+            align-items: center;
+            padding-top: 100px;
+        }
+
+
+        .calculator {
+            border: 9px solid black;
+            display: grid;
+            grid-template-columns: repeat(4);
+            grid-gap: 1px;
+            max-width: 500px;
+            margin: auto;
+            position: relative;
+            align-items: center;
+            height: 420px;
+        }
+        .body{
+            background-color: yellow;
+        }
+        .display {
+            font-size: 25px;
+            height: 50px;
+            max-width:500px ;
+            grid-column: span 4;
+            background-color: #f1f1f1;
+            padding: 15px;
+            text-align: center;
+        }
+
+
+        button {
+            padding: 10px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 100%; 
+            }
+
+        .empty:hover{
+            background-color: blue;
+        }
+        button:hover {
+            background-color: blue;
+        }
+        .number, .operator, .clear, .equal ,.deci,.del{
+            background-color: #4CAF50;
+            color: white;
+            font-size: 40px;
+        }
+        .operator {
+            background-color: #008CBA; 
+        }
+        .equal {
+            background-color: #f44336; 
+        }
+        .heading{
+            padding-left: 690px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class='body'>
+    <div class="parent">
+    <div class='heading'>
+        <h1>Calculator</h1>
+    </div>
+    <div class="calculator">
+        <input class="display"></input>
+        <button onclick="number(1)" class="number">1</button>
+        <button onclick="number(2)" class="number">2</button>
+        <button onclick="number(3)" class="number">3</button>
+        <button onclick="del()" class='del'>D</button>
+        <button onclick="number(4)" class="number">4</button>
+        <button onclick="number(5)" class="number">5</button>
+        <button onclick="number(6)" class="number">6</button>
+        <button onclick="clearD()" class="clear">C</button>
+        <button onclick="number(7)" class="number">7</button>
+        <button onclick="number(8)" class="number">8</button>
+        <button onclick="number(9)" class="number">9</button>
+        
+        <button onclick="operator('+')" class="operator">+</button>
+        <button onclick="number(0)" class="number">0</button>
+        <button onclick='root()' class="empty">&#8730</button>
+        <button onclick="equal()" class="equal">=</button>
+        <button onclick="operator('-')" class="operator">-</button>
+        <button onclick="sq()" class="empty">x<sup>2</sup></button>
+        <button onclick='deci()' class="deci">.</button>
+        <button onclick="operator('/')" class="operator">/</button>
+        <button onclick="operator('*')" class="operator">*</button>
+</div>
+    </div>
+    <script>
+        function sq() {
+            var inputField = document.querySelector('.display');
+            var content = inputField.value;
+            var length = content.length - 1;
+            
+            if (content === "" || ["+", "-", "/", "*"].includes(content.charAt(length))) {
+                alert(content);
+            } else {
+                var newi = "";
+                while (!["+","-","/","*"].includes(content.charAt(length)) && length >= 0) {
+                    newi = content.charAt(length) + newi;
+                    length -= 1;
+                }
+                var Zero = content.slice(0,length);
+                var after = Math.pow(newi, 2);
+            
+                if (parseInt(Zero) === 0) {
+                        inputField.value = content.slice(length,length+1) + after;
+                    } else {
+                        var prev = content.slice(0, length + 1);
+                        inputField.value = prev + after;
+                    }
+                }
+                
+            }
+        
+
+
+        function root() {
+                    var inputField = document.querySelector('.display');
+                var content = inputField.value;
+                var length = content.length - 1;
+                if (content === "" || ["+", "-", "/", "*"].includes(content.charAt(length))) {
+                    alert("LAST CHARACTER SHOULD BE A NUMBER");
+                } else {
+                    var newi = "";
+                    while (!["+","-","/","*"].includes(content.charAt(length)) && length >= 0) {
+                        newi = content.charAt(length) + newi;
+                        length -= 1;
+                    }
+                    var after = Math.sqrt(parseInt(newi));
+                    var Zero = content.slice(0, length);
+                    if (parseInt(Zero) === 0) {
+                        inputField.value = content.slice(length, length + 1) + after;
+                    } else {
+                        var prev = content.slice(0, length + 1);
+                        inputField.value = prev + after;
+                    }
+                }
+            }
+
+
+        function deci(){
+            var cur_display = document.querySelector(".display");
+            var content=cur_display.value;
+            var length = content.length - 1;
+            if(content===""){
+                cur_display.value="0.";
+            }
+            else{
+                if(content[length]!="."){cur_display.value+="."}
+                else{alert("give other than decimal after a decimal")}
+            }
+        }
+        function number(num){
+            var cur_display = document.querySelector(".display");
+            var content=cur_display.value;
+            var length=content.length-1
+            if (content == "") {
+                cur_display.value = num;
+            } 
+            else{
+                if(num===0){
+                    if(content[length]=="/"){
+                        alert("Zero division is not allowed");
+                    }
+                    else{cur_display.value+=num;}
+                }
+                else{cur_display.value+=num;}
+                }
+        }
+        function clearD(){
+            var cur_display=document.querySelector(".display");
+            cur_display.value='';
+        }
+        function del() {
+                var cur_display = document.querySelector(".display");
+                var content = cur_display.value;
+                var length = content.length - 1;
+                cur_display.value = content.slice(0, length);
+            }
+
+            function operator(op) {
+                var cur_display = document.querySelector(".display");
+                var content = cur_display.value;
+                var length = content.length - 1;
+
+                if (content === '') {
+                    alert("Select a number first");
+                } else {
+                    if (["+","-","/","*"].includes(content.charAt(length))) {
+                        alert("Please provide a number after an operator.");
+                    } else {
+                        
+                            cur_display.value += op;
+                        
+                    }
+                }
+            }
+
+            function equal() {
+                var cur_display = document.querySelector(".display");
+                var content = cur_display.value;
+                var length = content.length - 1;
+                if (content === "") {
+                    alert("Select a value first");
+                } 
+                else {
+                        if (["+","-","/","*","="].includes(content.charAt(length))) {
+                            alert("Complete the statement first");
+                        } 
+                        else {
+                            try {
+                                var ans = eval(content);
+                                cur_display.value = ans;
+                                }
+                             catch (error) {
+                                alert("Error in calculation");
+                            }
+                        }
+                    }
+                }
+                document.body.addEventListener("keypress",function(event){
+                    if(event.key==="="){
+                        equal();
+                    }
+                    else if (event.key >= '0' && event.key <= '9') {
+                            number(event.key);
+                        }
+                    else if (event.key === "+" || event.key === "-" || event.key === "/" || event.key === "*") {
+                                operator(event.key);
+                            }
+                    else if(event.key==="."){
+                        deci();
+                    }
+                 })
+    </script>    
+</body>
+</html>
